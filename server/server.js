@@ -10,7 +10,6 @@ connectDB(process.env.DB_URL);
 //middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use("/user", userRouter);
 
