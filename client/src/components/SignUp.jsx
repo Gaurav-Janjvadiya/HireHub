@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -8,6 +9,13 @@ function SignUp() {
   });
 
   const handleSubmit = (e) => {
+    e.preventDefault();
+    const serverUrl = import.meta.env.VITE_SERVER_URL;
+    axios
+      .post(serverUrl + "/user/register", formData)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(error));
+
     setFormData({
       username: "",
       email: "",
@@ -46,7 +54,9 @@ function SignUp() {
           onChange={handleChange}
         />
         <br />
-        <button type="submit">Sign Up</button>
+        <button className="border" type="submit">
+          Sign Up
+        </button>
       </form>
     </div>
   );
