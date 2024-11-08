@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 function SignUp() {
   const [formData, setFormData] = useState({
-    username: "",
+    fullname: "",
     email: "",
     password: "",
   });
@@ -13,11 +14,14 @@ function SignUp() {
     const serverUrl = import.meta.env.VITE_SERVER_URL;
     axios
       .post(serverUrl + "/user/register", formData)
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        const { token } = response.data;
+        Cookies.set("jwt", token, { expires: 7 });
+      })
       .catch((error) => console.log(error));
 
     setFormData({
-      username: "",
+      fullname: "",
       email: "",
       password: "",
     });
@@ -32,10 +36,11 @@ function SignUp() {
       <form onSubmit={handleSubmit}>
         <input
           className="border"
-          value={formData.username}
+          value={formData.fullname}
           type="text"
-          name="username"
+          name="fullname"
           onChange={handleChange}
+          placeholder="Enter your fullname"
         />
         <br />
         <input
@@ -44,6 +49,7 @@ function SignUp() {
           type="text"
           name="email"
           onChange={handleChange}
+          placeholder="Enter your email address"
         />
         <br />
         <input
@@ -52,6 +58,7 @@ function SignUp() {
           type="password"
           name="password"
           onChange={handleChange}
+          placeholder="Create a secure password"
         />
         <br />
         <button className="border" type="submit">

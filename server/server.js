@@ -11,6 +11,7 @@ connectDB(process.env.DB_URL);
 app.use(cors());
 app.use(express.json());
 
+//routes
 app.use("/user", userRouter);
 
 app.listen(8000, () => {
