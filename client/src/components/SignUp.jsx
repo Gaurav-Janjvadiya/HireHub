@@ -1,8 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useAuthContext } from "../context/AuthContext";
 
 function SignUp() {
+  const { setUser } = useAuthContext();
+
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -15,8 +18,9 @@ function SignUp() {
     axios
       .post(serverUrl + "/user/register", formData)
       .then((response) => {
-        const { token } = response.data;
-        Cookies.set("jwt", token, { expires: 7 });
+        const { token, user } = response.data;
+        Cookies.set("jwt", token, { expires: 7, secure: true });
+        setUser({ user });
       })
       .catch((error) => console.log(error));
 
